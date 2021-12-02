@@ -8,4 +8,6 @@ router.get('/', modulesController.getFilteredModules);
 
 router.get('/:moduleCode/:moduleName', modulesController.getModule);
 
+router.get('/get-requisite', modulesController.getRequisite);
+
 module.exports = router;

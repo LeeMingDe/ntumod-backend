@@ -3,7 +3,7 @@ const Module = require('../models/module');
 
 const getFilteredModules = async (req, res, next) => {
     const queries = req.query;
-    filters = {}
+    let filters = {}
     let modules;
     for (let [key, value] of Object.entries(queries)) {
         if (key == "exam") {
@@ -30,7 +30,7 @@ const getFilteredModules = async (req, res, next) => {
             filters["faculty"] = { $all: value }
             continue
         }
-        if (key === "prog]") {
+        if (key === "prog") {
             filters["programme"] = { $in: value }
             continue
         }
@@ -39,7 +39,7 @@ const getFilteredModules = async (req, res, next) => {
     try {
         modules = await Module.find(filters).sort({"moduleCode": 1});
     } catch (err) {
-        return next(new HttpError("Could not any modules", 404));
+        return next(new HttpError("Could not find any modules", 404));
     }
     res.json(modules);
 };
@@ -58,10 +58,27 @@ const getModule = async (req, res, next) => {
             },
         })
     } catch (err) {
-        return next(new HttpError("Could not the module", 404));
+        return next(new HttpError("Could not find the module", 404));
     }
     res.json(module)
 };
 
+const getRequisite = async (req, res, next) => {
+    const queries = req.query;
+    let { prerequisite, prerequisiteFor } = queries;
+    
+    prerequisite = prerequisite.split(" ");
+    prerequisiteFor = prerequisiteFor.split(" ");
+    
+    try {
+        prerequisite = await Module.find({ "moduleCode": { $in: prerequisite }}, ["moduleCode", "moduleName"]).sort({"moduleCode": 1});
+        prerequisiteFor = await Module.find({ "moduleCode": { $in: prerequisiteFor }}, ["moduleCode", "moduleName"]).sort({"moduleCode": 1});
+    } catch (err) {
+        return next(new HttpError("Could not find any modules", 404));
+    }
+    res.json([prerequisite, prerequisiteFor]);
+};
+
 exports.getFilteredModules = getFilteredModules;
 exports.getModule = getModule;
+exports.getRequisite = getRequisite;

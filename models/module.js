@@ -25,7 +25,9 @@ const moduleSchema = new Schema({
     prerequisite: { type: String },
     isMinor:  {type: Boolean},
     deptMaintain: { type: String },
-    isPassFail: { type: Boolean }
+    isPassFail: { type: Boolean },
+    hasSaturday: { type: Boolean },
+    isExtendedTiming: { type: Boolean }
 })
 
 module.exports = mongoose.model('Module', moduleSchema);
