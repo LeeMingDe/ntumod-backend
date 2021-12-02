@@ -50,12 +50,8 @@ const getModule = async (req, res, next) => {
     let module;
     try {
         module = await Module.findOne({
-            "moduleName": {
-                $regex : new RegExp(moduleName, "i")
-            },
-            "moduleCode": {
-                $regex : new RegExp(moduleCode, "i")
-            },
+            "moduleName": moduleName.toUpperCase(),
+            "moduleCode": moduleCode.toUpperCase(),
         })
     } catch (err) {
         return next(new HttpError("Could not find the module", 404));
