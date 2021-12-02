@@ -7,12 +7,7 @@ const HttpError = require('./models/http-error');
 
 const app = express();
 
-const corsOptions ={
-    origin:'https://ntumods.herokuapp.com', 
-    credentials:true,            //access-control-allow-credentials:true
-    optionSuccessStatus:200
-}
-app.use(cors(corsOptions));
+app.use(cors());
 
 app.use(express.json());
 

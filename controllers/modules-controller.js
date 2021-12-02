@@ -45,7 +45,7 @@ const getFilteredModules = async (req, res, next) => {
 };
 
 const getModule = async (req, res, next) => {
-    const moduleName = req.params.moduleName.replaceAll("-", " ");
+    const moduleName = req.params.moduleName.replace(/-/g, " ");
     const moduleCode = req.params.moduleCode;
     let module;
     try {
